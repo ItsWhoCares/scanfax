@@ -2,7 +2,7 @@ import { Stack } from "expo-router/stack";
 import { useFonts } from "expo-font";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Ionicons } from "@expo/vector-icons";
-import { router, Tabs, useRouter } from "expo-router";
+import { router, Tabs, useRouter, useNavigation } from "expo-router";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 
@@ -10,6 +10,7 @@ import "../FoundationConfig";
 import { Colors } from "react-native-ui-lib";
 export default function AppLayout() {
   const router = useRouter();
+  const nav = useNavigation();
   const [fontsLoaded] = useFonts({
     PopM: require("../assets/Fonts/Poppins-Medium.ttf"),
     PopR: require("../assets/Fonts/Poppins-Regular.ttf"),
@@ -23,7 +24,7 @@ export default function AppLayout() {
   return (
     <Tabs screenOptions={{ tabBarActiveTintColor: "blue" }}>
       <Tabs.Screen
-        name="send"
+        name="index"
         options={{
           title: "Send Fax",
           headerTitleStyle: {
@@ -80,8 +81,10 @@ export default function AppLayout() {
               color="black"
               style={{ marginLeft: 20 }}
               onPress={() => {
-                router.back();
-                // router.dismiss();
+                nav.reset({
+                  index: 0,
+                  routes: [{ name: "index" }],
+                });
               }}
             />
           ),

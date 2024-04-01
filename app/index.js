@@ -61,7 +61,22 @@ const send = () => {
       }
     }
   };
-
+  const handle_send_checks = () => {
+    if (!country || !faxNumber || !documents || documents.length === 0) {
+      alert("Please fill all the fields");
+    } else {
+      router.push({
+        pathname: "/pending",
+        params: {
+          documents: [documents.map((a) => a.uri)],
+          faxNumber: faxNumber,
+          countryName: country.name,
+          countryDialCode: country.dial_code,
+          countryCode: country.code,
+        },
+      });
+    }
+  };
   return (
     <View bg-white flex>
       <Text marginH-15 marginT-10 popSB h3>
@@ -323,10 +338,7 @@ const send = () => {
               // height: 50,
               backgroundColor: Colors.secondaryColor,
             }}
-            onPress={() => {
-              // router.dismiss();
-              router.push("pending");
-            }}
+            onPress={() => handle_send_checks()}
           />
         </View>
       </View>
