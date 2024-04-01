@@ -6,15 +6,15 @@ import { router, Tabs, useRouter } from "expo-router";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-import "../FoundationConfig";
+import "../../FoundationConfig";
 import { Colors } from "react-native-ui-lib";
 export default function AppLayout() {
   const router = useRouter();
   const [fontsLoaded] = useFonts({
-    PopM: require("../assets/Fonts/Poppins-Medium.ttf"),
-    PopR: require("../assets/Fonts/Poppins-Regular.ttf"),
-    PopB: require("../assets/Fonts/Poppins-Bold.ttf"),
-    PopSB: require("../assets/Fonts/Poppins-SemiBold.ttf"),
+    PopM: require("../../assets/Fonts/Poppins-Medium.ttf"),
+    PopR: require("../../assets/Fonts/Poppins-Regular.ttf"),
+    PopB: require("../../assets/Fonts/Poppins-Bold.ttf"),
+    PopSB: require("../../assets/Fonts/Poppins-SemiBold.ttf"),
   });
 
   if (!fontsLoaded) {

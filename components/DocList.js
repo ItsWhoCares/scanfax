@@ -27,7 +27,8 @@ const DocList = (props) => {
       style={{
         overflow: "hidden",
         borderRadius: 20,
-        margin: 10,
+        marginHorizontal: 10,
+        marginVertical: 5,
         // backgroundColor: Colors.primaryColor,
       }}>
       <Image
@@ -52,7 +53,7 @@ const DocList = (props) => {
         <Text popR h5 grey40>
           {bytesToMB(doc.size).toFixed(2)} MB
           {" - "}
-          {doc.mimeType.split("/")[1]}
+          {doc?.mimeType?.split("/")[1]}
         </Text>
       </View>
       <TouchableOpacity
