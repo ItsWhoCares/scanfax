@@ -32,26 +32,21 @@ const send = () => {
     code: "IN",
   });
 
-  const [faxNumber, setFaxNumber] = useState("7019460164");
-  const [documents, setDocuments] = useState([
-    {
-      mimeType: "image/png",
-      name: "1200px-Image_created_with_a_mobile_phone.png",
-      size: 1369165,
-      uri: "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/686ce0b2-7132-4a55-8e55-5ef6fc16cdfd.png",
-    },
-    {
-      mimeType: "image/png",
-      name: "1200px-Image_created_with_a_mobile_phone.png",
-      size: 1369165,
-      uri: "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/686ce0b2-7132-4a55-8e55-5ef6fc16cdfd.png",
-    },
-  ]);
+  const [faxNumber, setFaxNumber] = useState("");
+  const [documents, setDocuments] = useState();
 
+  const onDelete = (item) => {
+    const i = documents.indexOf(item);
+    if (i > -1) {
+      const newDocs = documents.filter((a, index) => index !== i);
+      setDocuments(newDocs);
+    }
+  };
   const handle_doc_pick = async () => {
     const result = await DocumentPicker.getDocumentAsync({
       type: ["application/pdf", "image/jpeg", "image/png"],
       copyToCacheDirectory: true,
+      multiple: true,
     });
     console.log(result);
     if (!result.canceled) {
@@ -73,6 +68,7 @@ const send = () => {
           countryName: country.name,
           countryDialCode: country.dial_code,
           countryCode: country.code,
+          date: new Date().toISOString(),
         },
       });
     }
@@ -208,10 +204,12 @@ const send = () => {
               fontSize: 16,
               //   backgroundColor: "red",
             }}
+            maxLength={6}
             centered
           />
           <TextField
             value={faxNumber}
+            maxLength={12}
             onChangeText={(text) => setFaxNumber(text)}
             style={{
               marginLeft: 20,
@@ -269,16 +267,20 @@ const send = () => {
             // flexGrow: 10,
           }}>
           <FlatList
-            style={{ height: "42%" }}
+            style={{ height: "45%" }}
             data={documents}
             renderItem={({ item, index }) => (
-              <DocList item={item} setDocuments={setDocuments} id={index} />
+              <DocList
+                item={item}
+                key={item.uri}
+                onDelete={() => onDelete(item)}
+              />
             )}
             // keyExtractor={this.keyExtractor}
             // contentContainerStyle={{ flexGrow: 1 }}
           />
           {/* ADD DOC Button */}
-          <View padding-10>
+          <View paddingH-10>
             <TouchableOpacity onPress={() => handle_doc_pick()}>
               <View
                 style={{

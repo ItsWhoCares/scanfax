@@ -30,7 +30,7 @@ const Success = () => {
     <View center>
       <View
         style={{
-          backgroundColor: "#32c658",
+          backgroundColor: Colors.successColor,
           // padding: 20,
           borderRadius: 10,
           marginBottom: 10,

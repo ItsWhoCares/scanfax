@@ -10,15 +10,32 @@ import {
   Image,
   ListItem,
 } from "react-native-ui-lib";
-import React from "react";
+import React, { useEffect } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
+import { FontAwesome6 } from "@expo/vector-icons";
+
 const bytesToMB = (bytes) => {
   return bytes / 1024 / 1024;
 };
 
+const getThumbnail = async (uri) => {
+  //check if file is jpg or png
+  if (uri.split(".").pop() === "jpg" || uri.split(".").pop() === "png") {
+    return uri;
+  }
+  return false;
+};
 const DocList = (props) => {
   const doc = props.item;
+  console.log(doc);
+  const [thumbnail, setThumbnail] = React.useState(false);
+  useEffect(() => {
+    getThumbnail(doc.uri).then((res) => {
+      setThumbnail(res);
+    });
+  }, []);
+
   return (
     <View
       row
@@ -31,12 +48,25 @@ const DocList = (props) => {
         marginVertical: 5,
         // backgroundColor: Colors.primaryColor,
       }}>
-      <Image
-        source={{
-          uri: doc.uri,
-        }}
-        style={{ width: 100, height: 100 }}
-      />
+      {thumbnail ? (
+        <Image
+          source={{
+            uri: thumbnail,
+          }}
+          style={{ width: 100, height: 100 }}
+        />
+      ) : (
+        <View
+          style={{
+            width: 100,
+            height: 100,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: Colors.$backgroundNeutral,
+          }}>
+          <FontAwesome6 name="file-pdf" size={24} color="black" />
+        </View>
+      )}
 
       <View
         col
@@ -63,9 +93,7 @@ const DocList = (props) => {
           alignItems: "center",
           width: 50,
         }}
-        onPress={() =>
-          props.setDocuments((prev) => prev.filter((a, i) => i != props.id))
-        }>
+        onPress={() => props.onDelete()}>
         <MaterialIcons
           name="delete"
           size={28}

@@ -55,15 +55,6 @@ export default function AppLayout() {
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="clipboard-list" size={24} color={color} />
           ),
-          headerLeft: () => (
-            <FontAwesome6
-              name="arrow-left-long"
-              size={24}
-              color="black"
-              style={{ marginLeft: 20 }}
-              onPress={() => router.back()}
-            />
-          ),
         }}
       />
       <Tabs.Screen

@@ -7,7 +7,7 @@ Colors.loadColors({
   secondaryColor: "#0054fe",
   textColor: "#697B98",
   errorColor: "#E63B2E",
-  successColor: "#ADC76F",
+  successColor: "#32c658",
   warnColor: "##FF963C",
 });
 

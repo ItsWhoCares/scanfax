@@ -1,5 +1,5 @@
 import { View, Text, Card, Colors, Button } from "react-native-ui-lib";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CountryFlag from "react-native-country-flag";
 
 import Success from "../components/Success";
@@ -9,18 +9,50 @@ import send from "./index";
 import Wait from "../components/Wait";
 
 import "../helpers";
-import { getDeviceUuid, insertToDb } from "../helpers";
+import {
+  formatDate,
+  getDeviceUuid,
+  getLocally,
+  insertToDb,
+  storeLocally,
+  uploadDocuments,
+} from "../helpers";
+import { captureRef } from "react-native-view-shot";
+import * as Sharing from "expo-sharing";
+
+const handleShare = async (ref) => {
+  captureRef(ref, {
+    format: "jpg",
+    quality: 0.8,
+  }).then(
+    (uri) => {
+      console.log("Image saved to", uri);
+      Sharing.shareAsync(uri);
+    },
+    (error) => console.error("Oops, snapshot failed", error)
+  );
+};
 
 const handleUpload = async (data) => {
   return new Promise(async (resolve, reject) => {
-    await insertToDb({
+    console.log("uploading");
+    const res = await insertToDb({
       faxNumber: data.faxNumber,
       countryCode: data.countryCode,
       countryName: data.countryName,
       countryDialCode: data.countryDialCode,
       deviceUuid: await getDeviceUuid(),
       documentsUrl: await getDeviceUuid(),
+      numDoc: data.documents.length,
     });
+    if (res === false) alert("Error uploading");
+    const res1 = await uploadDocuments(
+      data.documents,
+      res[0].deviceUuid + "/" + res[0].id
+    );
+    // console.log(res1);
+    await storeLocally(data);
+
     setTimeout(() => {
       resolve("success");
     }, 3000);
@@ -28,6 +60,7 @@ const handleUpload = async (data) => {
 };
 
 const pending = () => {
+  const viewRef = useRef(null);
   const nav = useNavigation();
   const [success, setSuccess] = useState(false);
   const params = useLocalSearchParams();
@@ -38,12 +71,9 @@ const pending = () => {
       setSuccess(true);
     });
   }, []);
-  // getDeviceUuid().then((uuid) => {
-  //   console.log(uuid);
-  // });
 
   return (
-    <View padding-10 bg-white flex>
+    <View padding-10 bg-white flex ref={viewRef}>
       {success ? <Success /> : <Wait />}
       <View paddingH-50 marginT-10>
         <Text popSB h3>
@@ -84,7 +114,7 @@ const pending = () => {
           <Text grey30 popR>
             Date
           </Text>
-          <Text popM>{"25/12/2024 - 12:00 PM"}</Text>
+          <Text popM>{formatDate(params.date)}</Text>
         </View>
       </View>
       <View
@@ -115,9 +145,11 @@ const pending = () => {
           br30
           popSB
           black
+          disabled={!success}
           style={{
             backgroundColor: "white",
           }}
+          onPress={() => handleShare(viewRef)}
         />
       </View>
     </View>
