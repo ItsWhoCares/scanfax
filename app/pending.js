@@ -6,6 +6,7 @@ import Success from "../components/Success";
 import { Constants } from "expo-constants";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import send from "./index";
+import { StatusBar } from "expo-status-bar";
 import Wait from "../components/Wait";
 
 import "../helpers";
@@ -74,6 +75,7 @@ const pending = () => {
 
   return (
     <View padding-10 bg-white flex ref={viewRef}>
+       <StatusBar style="dark" />
       {success ? <Success /> : <Wait />}
       <View paddingH-50 marginT-10>
         <Text popSB h3>

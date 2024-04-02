@@ -22,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.whocares.scanfax"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,6 +31,14 @@
     "plugins": [
       "expo-router",
       "expo-secure-store"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "006b78c9-755d-476d-8885-1f2ef70e88ab"
+      }
+    }
   }
 }

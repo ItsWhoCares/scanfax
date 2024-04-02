@@ -1,10 +1,10 @@
-import { View, Text, Card, Colors, Button } from "react-native-ui-lib";
+import { View, Text } from "react-native-ui-lib";
 import React, { useEffect, useState } from "react";
-import { AntDesign } from "@expo/vector-icons";
-import CountryFlag from "react-native-country-flag";
-import { Animated, FlatList, Image } from "react-native";
+
+import { FlatList } from "react-native";
 import { deleteLocally, getLocally } from "../helpers";
 import HistoryItem from "./../components/historyItem";
+import { StatusBar } from "expo-status-bar";
 
 const history = () => {
   const [historyData, setHistoryData] = useState([]);
@@ -17,6 +17,7 @@ const history = () => {
   }, []);
   return (
     <View flex bg-white padding-10 bg-$backgroundNeutral>
+      <StatusBar style="dark" />
       <Text
         onPress={() => {
           setHistoryData([]);

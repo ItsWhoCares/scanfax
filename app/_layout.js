@@ -22,7 +22,10 @@ export default function AppLayout() {
     return null;
   }
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: "blue" }}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: "blue",
+      }}>
       <Tabs.Screen
         name="index"
         options={{
