@@ -4,8 +4,8 @@ import * as SecureStore from "expo-secure-store";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  "https://rqypllshpjvwjzdymnrf.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJxeXBsbHNocGp2d2p6ZHltbnJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE5OTE5ODIsImV4cCI6MjAyNzU2Nzk4Mn0.GiJxSviG-GWakHTPddLvY2uOjHmtMjA1WJMwqfmDINE"
+  process.env.EXPO_PUBLIC_SUPABASE_URL,
+  process.env.EXPO_PUBLIC_SUPABASE_KEY
 );
 
 export const getDeviceUuid = async () => {
