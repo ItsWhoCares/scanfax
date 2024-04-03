@@ -1,7 +1,7 @@
 import { View, Text, Colors } from "react-native-ui-lib";
 import React, { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
-import { Animated } from "react-native";
+import { Animated, StyleSheet } from "react-native";
 const AnimatedIcon = Animated.createAnimatedComponent(AntDesign);
 
 import { withAnchorPoint } from "react-native-anchor-point";
@@ -53,17 +53,7 @@ const Wait = () => {
   }, []);
   return (
     <View center>
-      <View
-        style={{
-          backgroundColor: Colors.secondaryColor,
-          // padding: 20,
-          borderRadius: 10,
-          marginBottom: 10,
-          width: 80,
-          height: 80,
-          alignItems: "center",
-          justifyContent: "center",
-        }}>
+      <View style={styles.iconCntr}>
         {/* <AnimatedIcon
             // onPress={() => animVal.setValue(1)}
             name="clockcircle"
@@ -76,43 +66,9 @@ const Wait = () => {
             }}
           /> */}
 
-        <View
-          style={{
-            position: "absolute",
-            // top: 25,
-            backgroundColor: "white",
-            width: 35,
-            height: 35,
-            borderRadius: 25,
-            alignItems: "center",
-          }}>
-          <Animated.View
-            style={[
-              {
-                position: "absolute",
-                // top: 25,
-                height: 12,
-                width: 4,
-                margin: 5,
-                backgroundColor: Colors.secondaryColor,
-                // aspectRatio: 1,
-                borderRadius: 5,
-                // transform: [{ rotate: "90deg" }],
-              },
-              getTransform(),
-            ]}
-          />
-          <View
-            style={{
-              height: 14,
-              width: 4,
-              // top: 25,
-              margin: 5,
-              backgroundColor: Colors.secondaryColor,
-              // aspectRatio: 1,
-              borderRadius: 5,
-            }}
-          />
+        <View style={styles.clock}>
+          <Animated.View style={[styles.moveHand, getTransform()]} />
+          <View style={styles.fixHand} />
         </View>
       </View>
       <Text popB h2>
@@ -124,5 +80,46 @@ const Wait = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  iconCntr: {
+    backgroundColor: Colors.secondaryColor,
+    // padding: 20,
+    borderRadius: 10,
+    marginBottom: 10,
+    width: 80,
+    height: 80,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  clock: {
+    position: "absolute",
+    // top: 25,
+    backgroundColor: "white",
+    width: 35,
+    height: 35,
+    borderRadius: 25,
+    alignItems: "center",
+  },
+  moveHand: {
+    position: "absolute",
+
+    height: 12,
+    width: 4,
+    margin: 5,
+    backgroundColor: Colors.secondaryColor,
+
+    borderRadius: 5,
+  },
+  fixHand: {
+    height: 14,
+    width: 4,
+    // top: 25,
+    margin: 5,
+    backgroundColor: Colors.secondaryColor,
+    // aspectRatio: 1,
+    borderRadius: 5,
+  },
+});
 
 export default Wait;

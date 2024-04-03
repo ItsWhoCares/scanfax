@@ -11,7 +11,12 @@ import {
   ListItem,
 } from "react-native-ui-lib";
 import React, { useState } from "react";
-import { ScrollView, FlatList, TouchableOpacity } from "react-native";
+import {
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import countryList from "../assets/countryList.json";
 import { Entypo } from "@expo/vector-icons";
 import CountryFlag from "react-native-country-flag";
@@ -61,7 +66,13 @@ const send = () => {
     }
   };
   const handle_send_checks = () => {
-    if (!country || !faxNumber || !documents || documents.length === 0) {
+    if (
+      !country ||
+      !faxNumber ||
+      !documents ||
+      documents.length === 0 ||
+      faxNumber.length < 6
+    ) {
       alert("Please fill all the fields");
     } else {
       router.push({
@@ -95,21 +106,20 @@ const send = () => {
         <Text grey30 h4 popR>
           Recipient Fax Number
         </Text>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            padding: 10,
-          }}>
+        <View style={styles.numInpContainer}>
           <TextField
             value={country.dial_code}
-            style={{
-              height: 40,
-              width: 50,
-              fontFamily: "PopM",
-              fontSize: 16,
-              //   backgroundColor: "red",
-            }}
+            height={40}
+            popM
+            h4
+            width={50}
+            // style={{
+            //   height: 40,
+            //   width: 50,
+            //   fontFamily: "PopM",
+            //   fontSize: 16,
+            //   //   backgroundColor: "red",
+            // }}
             maxLength={6}
             centered
           />
@@ -117,13 +127,17 @@ const send = () => {
             value={faxNumber}
             maxLength={12}
             onChangeText={(text) => setFaxNumber(text)}
-            style={{
-              marginLeft: 20,
-              height: 40,
-              fontFamily: "PopM",
-              fontSize: 16,
-              //   backgroundColor: "red",
-            }}
+            marginL-20
+            height={40}
+            popM
+            h4
+            // style={{
+            //   // marginLeft: 20,
+            //   // height: 40,
+            //   fontFamily: "PopM",
+            //   fontSize: 16,
+            //   //   backgroundColor: "red",
+            // }}
             // allow number only
             keyboardType="numeric"
             containerStyle={{ flex: 1 }}
@@ -134,8 +148,6 @@ const send = () => {
                   size={24}
                   color="black"
                   style={{
-                    // borderRadius: BorderRadiuses.br20,
-                    // backgroundColor: Colors.$backgroundNeutral,
                     justifyContent: "center",
                     alignItems: "center",
                   }}
@@ -157,12 +169,7 @@ const send = () => {
             h4
             popR
             secondaryColor
-            style={{
-              marginLeft: "auto",
-              paddingRight: 10,
-              textAlignVertical: "center",
-              textDecorationLine: "underline",
-            }}>
+            style={styles.addDocBtn}>
             Clear
           </Text>
         </View>
@@ -197,8 +204,6 @@ const send = () => {
             br30
             margin-10
             style={{
-              // width: 150,
-              // height: 50,
               backgroundColor: Colors.secondaryColor,
             }}
             onPress={() => handle_send_checks()}
@@ -208,5 +213,19 @@ const send = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  addDocBtn: {
+    marginLeft: "auto",
+    paddingRight: 10,
+    textAlignVertical: "center",
+    textDecorationLine: "underline",
+  },
+  numInpContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+  },
+});
 
 export default send;

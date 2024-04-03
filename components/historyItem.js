@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { formatDate } from "./../helpers";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import { StyleSheet } from "react-native";
 
 const getThumbnail = async (uri) => {
   //check if file is jpg or png
@@ -22,23 +23,9 @@ const HistoryItem = (props) => {
   }, []);
 
   return (
-    <View
-      margin-5
-      bg-white
-      style={{
-        borderRadius: 20,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}>
+    <View margin-5 bg-white style={styles.container}>
       {thumbnail ? (
-        <View
-          style={{
-            width: 100,
-            height: 100,
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
+        <View style={styles.thumbnail}>
           <Image
             marginH-15
             source={{
@@ -48,14 +35,7 @@ const HistoryItem = (props) => {
           />
         </View>
       ) : (
-        <View
-          style={{
-            width: 100,
-            height: 100,
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: Colors.$backgroundNeutral,
-          }}>
+        <View style={styles.pdfIcon}>
           <FontAwesome6 name="file-pdf" size={32} color="black" />
         </View>
       )}
@@ -98,5 +78,27 @@ const HistoryItem = (props) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    borderRadius: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  thumbnail: {
+    width: 100,
+    height: 100,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  pdfIcon: {
+    width: 100,
+    height: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.$backgroundNeutral,
+  },
+});
 
 export default HistoryItem;

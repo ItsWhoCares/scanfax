@@ -1,7 +1,7 @@
 import { View, Text } from "react-native-ui-lib";
 import React, { useEffect, useState } from "react";
 
-import { FlatList } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { deleteLocally, getLocally } from "../helpers";
 import HistoryItem from "./../components/historyItem";
 import { StatusBar } from "expo-status-bar";
@@ -27,11 +27,7 @@ const history = () => {
         right
         secondaryColor
         popR
-        style={{
-          textDecorationLine: "underline",
-          alignSelf: "flex-end",
-          marginRight: 10,
-        }}>
+        style={styles.clearHistory}>
         Clear history
       </Text>
       <FlatList
@@ -44,5 +40,12 @@ const history = () => {
     </View>
   );
 };
+const styles = StyleSheet.create({
+  clearHistory: {
+    textDecorationLine: "underline",
+    alignSelf: "flex-end",
+    marginRight: 10,
+  },
+});
 
 export default history;

@@ -17,6 +17,7 @@ import {
   insertToDb,
   storeLocally,
   uploadDocuments,
+  handleUpload,
 } from "../helpers";
 import { captureRef } from "react-native-view-shot";
 import * as Sharing from "expo-sharing";
@@ -34,32 +35,6 @@ const handleShare = async (ref) => {
   );
 };
 
-const handleUpload = async (data) => {
-  return new Promise(async (resolve, reject) => {
-    console.log("uploading");
-    const res = await insertToDb({
-      faxNumber: data.faxNumber,
-      countryCode: data.countryCode,
-      countryName: data.countryName,
-      countryDialCode: data.countryDialCode,
-      deviceUuid: await getDeviceUuid(),
-      documentsUrl: await getDeviceUuid(),
-      numDoc: data.documents.length,
-    });
-    if (res === false) alert("Error uploading");
-    const res1 = await uploadDocuments(
-      data.documents,
-      res[0].deviceUuid + "/" + res[0].id
-    );
-    // console.log(res1);
-    await storeLocally(data);
-
-    setTimeout(() => {
-      resolve("success");
-    }, 3000);
-  });
-};
-
 const pending = () => {
   const viewRef = useRef(null);
   const nav = useNavigation();
@@ -75,7 +50,7 @@ const pending = () => {
 
   return (
     <View padding-10 bg-white flex ref={viewRef}>
-       <StatusBar style="dark" />
+      <StatusBar style="dark" />
       {success ? <Success /> : <Wait />}
       <View paddingH-50 marginT-10>
         <Text popSB h3>

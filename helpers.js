@@ -52,6 +52,32 @@ export const insertToDb = async (data) => {
   }
   return insertedData;
 };
+
+export const handleUpload = async (data) => {
+  return new Promise(async (resolve, reject) => {
+    console.log("uploading");
+    const res = await insertToDb({
+      faxNumber: data.faxNumber,
+      countryCode: data.countryCode,
+      countryName: data.countryName,
+      countryDialCode: data.countryDialCode,
+      deviceUuid: await getDeviceUuid(),
+      documentsUrl: await getDeviceUuid(),
+      numDoc: data.documents.length,
+    });
+    if (res === false) alert("Error uploading");
+    const res1 = await uploadDocuments(
+      data.documents,
+      res[0].deviceUuid + "/" + res[0].id
+    );
+    await storeLocally(data);
+
+    setTimeout(() => {
+      resolve("success");
+    }, 3000);
+  });
+};
+
 import * as FileSystem from "expo-file-system";
 import { decode } from "base64-arraybuffer";
 export const uploadDocuments = async (documents, url) => {
