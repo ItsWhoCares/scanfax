@@ -1,8 +1,6 @@
 import { View, Text, Colors } from "react-native-ui-lib";
 import React, { useEffect, useState } from "react";
-import { AntDesign } from "@expo/vector-icons";
 import { Animated, StyleSheet } from "react-native";
-const AnimatedIcon = Animated.createAnimatedComponent(AntDesign);
 
 import { withAnchorPoint } from "react-native-anchor-point";
 
@@ -35,16 +33,6 @@ const Wait = () => {
         })
       );
       a.start();
-
-      // spinAnim.setValue(0);
-      // Animated.timing(spinAnim, {
-      //   toValue: 1,
-      //   duration: 1000,
-      //   useNativeDriver: true,
-      // }).start();
-      // Animated.loop(spinAnim, {
-      //   iterations: 1,
-      // });
     }
     rotate();
     return () => {
@@ -54,18 +42,6 @@ const Wait = () => {
   return (
     <View center>
       <View style={styles.iconCntr}>
-        {/* <AnimatedIcon
-            // onPress={() => animVal.setValue(1)}
-            name="clockcircle"
-            size={32}
-            color={"white"}
-            style={{ transform: [{ rotate: spin }] }}
-            onPress={() => {
-              setIconPressed(!iconPressed);
-              rotate();
-            }}
-          /> */}
-
         <View style={styles.clock}>
           <Animated.View style={[styles.moveHand, getTransform()]} />
           <View style={styles.fixHand} />
@@ -84,7 +60,6 @@ const Wait = () => {
 const styles = StyleSheet.create({
   iconCntr: {
     backgroundColor: Colors.secondaryColor,
-    // padding: 20,
     borderRadius: 10,
     marginBottom: 10,
     width: 80,
@@ -94,7 +69,6 @@ const styles = StyleSheet.create({
   },
   clock: {
     position: "absolute",
-    // top: 25,
     backgroundColor: "white",
     width: 35,
     height: 35,
@@ -103,21 +77,17 @@ const styles = StyleSheet.create({
   },
   moveHand: {
     position: "absolute",
-
     height: 12,
     width: 4,
     margin: 5,
     backgroundColor: Colors.secondaryColor,
-
     borderRadius: 5,
   },
   fixHand: {
     height: 14,
     width: 4,
-    // top: 25,
     margin: 5,
     backgroundColor: Colors.secondaryColor,
-    // aspectRatio: 1,
     borderRadius: 5,
   },
 });

@@ -70,11 +70,19 @@ export const handleUpload = async (data) => {
       data.documents,
       res[0].deviceUuid + "/" + res[0].id
     );
+    // if any element is false, then set state to false else true
+    const state = !res1.includes(false);
+    // add state to data
+    data.state = state;
+    // remove toUpload key
+    delete data.toUpload;
+
+    // console.log("state", data);
     await storeLocally(data);
 
     setTimeout(() => {
-      resolve("success");
-    }, 3000);
+      resolve(state);
+    }, 1000);
   });
 };
 
@@ -123,7 +131,7 @@ export const getLocally = async () => {
   const history = await AsyncStorage.getItem("history");
   if (history) {
     // console.log("history", JSON.parse(history));
-    return JSON.parse(history);
+    return JSON.parse(history).reverse();
   }
   return [];
 };

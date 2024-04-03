@@ -1,38 +1,14 @@
-import {
-  View,
-  Text,
-  Picker,
-  Button,
-  Colors,
-  Assets,
-  Icon,
-  TextField,
-  Image,
-  ListItem,
-} from "react-native-ui-lib";
+import { View, Text, Button, Colors, TextField } from "react-native-ui-lib";
 import React, { useState } from "react";
-import {
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import countryList from "../assets/countryList.json";
-import { Entypo } from "@expo/vector-icons";
-import CountryFlag from "react-native-country-flag";
-import { BorderRadiuses } from "react-native-ui-lib/src/style/borderRadiuses";
-import { FontAwesome } from "@expo/vector-icons";
+import { FlatList, StyleSheet } from "react-native";
+import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import * as DocumentPicker from "expo-document-picker";
-import { MaterialIcons } from "@expo/vector-icons";
 import DocList from "../components/DocList";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import CountrySelector from "../components/CountrySelector";
 import AddDocButton from "../components/AddDocButton";
 
-const bytesToMB = (bytes) => {
-  return bytes / 1024 / 1024;
-};
 const send = () => {
   const router = useRouter();
   const [country, setCountry] = useState({
@@ -41,7 +17,7 @@ const send = () => {
     code: "IN",
   });
 
-  const [faxNumber, setFaxNumber] = useState("");
+  const [faxNumber, setFaxNumber] = useState("44444444");
   const [documents, setDocuments] = useState();
 
   const onDelete = (item) => {
@@ -52,6 +28,11 @@ const send = () => {
     }
   };
   const handle_doc_pick = async () => {
+    // only allow at max 5 files
+    if (documents && documents.length >= 5) {
+      alert("You can only send 5 files at a time");
+      return;
+    }
     const result = await DocumentPicker.getDocumentAsync({
       type: ["application/pdf", "image/jpeg", "image/png"],
       copyToCacheDirectory: true,
@@ -66,27 +47,36 @@ const send = () => {
     }
   };
   const handle_send_checks = () => {
-    if (
-      !country ||
-      !faxNumber ||
-      !documents ||
-      documents.length === 0 ||
-      faxNumber.length < 6
-    ) {
+    if (!country || !faxNumber || !documents || documents.length === 0) {
       alert("Please fill all the fields");
-    } else {
-      router.push({
-        pathname: "/pending",
-        params: {
-          documents: [documents.map((a) => a.uri)],
-          faxNumber: faxNumber,
-          countryName: country.name,
-          countryDialCode: country.dial_code,
-          countryCode: country.code,
-          date: new Date().toISOString(),
-        },
-      });
+      return;
     }
+    if (faxNumber.length < 6) {
+      alert("Please enter a valid fax number (minimum 6 digits)");
+      return;
+    }
+    if (documents.length > 5) {
+      alert("You can only send 5 files at a time");
+      return;
+    }
+    const totalSize =
+      documents.reduce((acc, curr) => acc + curr.size, 0) / 1000 / 1000;
+    if (totalSize > 25) {
+      alert("Total size of documents should not exceed 25MB");
+      return;
+    }
+    router.push({
+      pathname: "/pending",
+      params: {
+        documents: [documents.map((a) => a.uri)],
+        faxNumber: faxNumber,
+        countryName: country.name,
+        countryDialCode: country.dial_code,
+        countryCode: country.code,
+        date: new Date().toISOString(),
+        toUpload: true,
+      },
+    });
   };
   return (
     <View bg-white flex>
@@ -113,13 +103,6 @@ const send = () => {
             popM
             h4
             width={50}
-            // style={{
-            //   height: 40,
-            //   width: 50,
-            //   fontFamily: "PopM",
-            //   fontSize: 16,
-            //   //   backgroundColor: "red",
-            // }}
             maxLength={6}
             centered
           />
@@ -131,20 +114,13 @@ const send = () => {
             height={40}
             popM
             h4
-            // style={{
-            //   // marginLeft: 20,
-            //   // height: 40,
-            //   fontFamily: "PopM",
-            //   fontSize: 16,
-            //   //   backgroundColor: "red",
-            // }}
             // allow number only
             keyboardType="numeric"
             containerStyle={{ flex: 1 }}
             trailingAccessory={
               <View>
-                <FontAwesome
-                  name="address-book"
+                <MaterialIcons
+                  name="contacts"
                   size={24}
                   color="black"
                   style={{
@@ -175,9 +151,7 @@ const send = () => {
         </View>
         <View
           style={{
-            // flex: 1,
             flexDirection: "column",
-            // flexGrow: 10,
           }}>
           <FlatList
             style={{ height: "45%" }}
@@ -189,8 +163,6 @@ const send = () => {
                 onDelete={() => onDelete(item)}
               />
             )}
-            // keyExtractor={this.keyExtractor}
-            // contentContainerStyle={{ flexGrow: 1 }}
           />
           {/* ADD DOC Button */}
           <AddDocButton handle_doc_pick={handle_doc_pick} />
@@ -198,8 +170,6 @@ const send = () => {
           {/* SEND Button */}
           <Button
             label="Send Fax"
-            //   onPress={this.handleSend}
-            // marginB-20
             popM
             br30
             margin-10

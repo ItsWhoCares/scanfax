@@ -1,9 +1,16 @@
-import { View, Text, Image } from "react-native-ui-lib";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Colors,
+} from "react-native-ui-lib";
 import React, { useEffect } from "react";
 import { formatDate } from "./../helpers";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+
 import { StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
 
 const getThumbnail = async (uri) => {
   //check if file is jpg or png
@@ -14,7 +21,9 @@ const getThumbnail = async (uri) => {
 };
 
 const HistoryItem = (props) => {
+  const router = useRouter();
   const data = props.item;
+  // console.log(Colors);
   const [thumbnail, setThumbnail] = React.useState(false);
   useEffect(() => {
     getThumbnail(data.documents[0]).then((res) => {
@@ -23,7 +32,26 @@ const HistoryItem = (props) => {
   }, []);
 
   return (
-    <View margin-5 bg-white style={styles.container}>
+    <TouchableOpacity
+      margin-5
+      bg-white
+      style={styles.container}
+      onPress={() => {
+        // console.log(data);
+        router.push({
+          pathname: "/pending",
+          params: {
+            documents: [...data.documents],
+            faxNumber: data.faxNumber,
+            countryName: data.countryName,
+            countryDialCode: data.countryDialCode,
+            countryCode: data.countryCode,
+            date: data.date,
+            toUpload: false,
+            state: data.state,
+          },
+        });
+      }}>
       {thumbnail ? (
         <View style={styles.thumbnail}>
           <Image
@@ -52,12 +80,12 @@ const HistoryItem = (props) => {
           <Text
             popM
             h5
-            successColor
             marginR-15
             style={{
               textAlignVertical: "center",
+              color: data.state ? Colors.successColor : Colors.errorColor,
             }}>
-            Success
+            {data.state ? "Success" : "Failed"}
           </Text>
         </View>
         <View>
@@ -75,7 +103,7 @@ const HistoryItem = (props) => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

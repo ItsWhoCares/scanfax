@@ -2,14 +2,13 @@ import {
   View,
   Text,
   Picker,
-  Button,
   Colors,
   Assets,
   Icon,
 } from "react-native-ui-lib";
-import React, { useState } from "react";
+import React from "react";
 import { Entypo } from "@expo/vector-icons";
-import { ScrollView, FlatList, TouchableOpacity } from "react-native";
+import {  TouchableOpacity } from "react-native";
 import CountryFlag from "react-native-country-flag";
 import countryList from "../assets/countryList.json";
 

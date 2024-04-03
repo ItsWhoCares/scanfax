@@ -8,11 +8,14 @@ import { StatusBar } from "expo-status-bar";
 
 const history = () => {
   const [historyData, setHistoryData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const fetchHistory = async () => {
+    setLoading(true);
+    const history = await getLocally();
+    setLoading(false);
+    setHistoryData(history);
+  };
   useEffect(() => {
-    const fetchHistory = async () => {
-      const history = await getLocally();
-      setHistoryData(history);
-    };
     fetchHistory();
   }, []);
   return (
@@ -36,6 +39,8 @@ const history = () => {
           <HistoryItem item={item} key={item.date} />
         )}
         keyExtractor={(item) => item.date}
+        refreshing={loading}
+        onRefresh={fetchHistory}
       />
     </View>
   );

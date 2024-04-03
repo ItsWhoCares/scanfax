@@ -38,17 +38,6 @@ const Success = () => {
           alignItems: "center",
           justifyContent: "center",
         }}>
-        {/* <AnimatedIcon
-          // onPress={() => animVal.setValue(1)}
-          name="clockcircle"
-          size={32}
-          color={"white"}
-          style={{ transform: [{ rotate: spin }] }}
-          onPress={() => {
-            setIconPressed(!iconPressed);
-            rotate();
-          }}
-        /> */}
         <AnimatedIcon
           name="paper-plane"
           size={32}

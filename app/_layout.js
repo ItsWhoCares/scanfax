@@ -1,15 +1,12 @@
-import { Stack } from "expo-router/stack";
 import { useFonts } from "expo-font";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Ionicons } from "@expo/vector-icons";
-import { router, Tabs, useRouter, useNavigation } from "expo-router";
+import { Tabs, useNavigation } from "expo-router";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 import "../FoundationConfig";
 import { Colors } from "react-native-ui-lib";
 export default function AppLayout() {
-  const router = useRouter();
   const nav = useNavigation();
   const [fontsLoaded] = useFonts({
     PopM: require("../assets/Fonts/Poppins-Medium.ttf"),
@@ -64,6 +61,7 @@ export default function AppLayout() {
         // Name of the route to hide.
         name="pending"
         options={{
+          unmountOnBlur: true,
           // This tab will no longer show up in the tab bar.
           href: null,
           title: "",
