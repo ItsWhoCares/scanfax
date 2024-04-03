@@ -17,7 +17,7 @@ const send = () => {
     code: "IN",
   });
 
-  const [faxNumber, setFaxNumber] = useState("44444444");
+  const [faxNumber, setFaxNumber] = useState("");
   const [documents, setDocuments] = useState();
 
   const onDelete = (item) => {

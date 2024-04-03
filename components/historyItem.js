@@ -59,12 +59,29 @@ const HistoryItem = (props) => {
             source={{
               uri: thumbnail,
             }}
-            style={{ width: 60, height: 60, borderRadius: 20 }}
+            style={{ width: 70, height: 70, borderRadius: 20 }}
           />
         </View>
       ) : (
         <View style={styles.pdfIcon}>
-          <FontAwesome6 name="file-pdf" size={32} color="black" />
+          <View
+            style={{
+              height: 70,
+              width: 70,
+              backgroundColor: Colors.$backgroundNeutral,
+              borderRadius: 20,
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
+            <FontAwesome6
+              name="file-pdf"
+              size={32}
+              color="black"
+              style={{
+                marginLeft: 5,
+              }}
+            />
+          </View>
         </View>
       )}
 
@@ -125,7 +142,7 @@ const styles = StyleSheet.create({
     height: 100,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Colors.$backgroundNeutral,
+    // backgroundColor: Colors.$backgroundNeutral,
   },
 });
 
